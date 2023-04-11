@@ -4,15 +4,7 @@ import math
 import csv
 import os
 
-class Location:
-    def __init__(self, latitude, longitude, altitude, date, hour):
-        self.longitude = longitude
-        self.latitude = latitude
-        self.altitude = altitude
-        # self.datetime = datetime.datetime.strptime(date + ' ' + hour, '%d/%m/%y %H:%M:%S')
-        self.date = date
-        self.hour = hour
-        # print(self.datetime)
+cleanFileName = " "
 
 
 def ColumnOrder():
