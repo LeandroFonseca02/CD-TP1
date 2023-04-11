@@ -4,6 +4,8 @@ import math
 import csv
 import os
 
+cleanFileName = " "
+
 class Location:
     def __init__(self, latitude, longitude, altitude, date, hour):
         self.longitude = longitude
@@ -65,11 +67,16 @@ def CSVextension(csvFile):
     split_tup = os.path.splitext(csvFile)
 
     if split_tup[1] == '':
-        csvFile += '.csv'
-    elif split_tup[1] != '.csv':
-        csvFile = csvFile[:len(csvFile) -4]
+        cleanFileName = csvFile + "Cleaned.csv"
+        print(cleanFileName)
         csvFile += '.csv'
 
+    elif split_tup[1] != '.csv':
+        csvFile = csvFile[:len(csvFile) -4]
+        cleanFileName = csvFile + "Cleaned.csv"
+        csvFile += '.csv'
+        print(cleanFileName)
+        
     return csvFile
 
 
@@ -88,16 +95,17 @@ def LineAnaliser(file, fileName):
 def OpenCSVfile():
     csvFile = input("Introduzir nome do CSV: ")
     file = CSVextension(csvFile)
-
+    
+    print(cleanFileName)
     # headerLine = HasHeader(file)
     # print("Cabeçalho na linha " + str(headerLine))
     
     # LineAnaliser(file, csvFile)
 
-    df = pd.read_csv(file, delimiter=';')
-    print(df)
+    # df = pd.read_csv(file, delimiter=';')
+    # print(df)
 
-    df = LineAnaliser(file, csvFile)
+    # df = LineAnaliser(file, csvFile)
 
     
     # if(df["Longitude"] == ''):
