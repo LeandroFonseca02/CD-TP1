@@ -14,6 +14,7 @@ class Location:
         self.hour = hour
         # print(self.datetime)
 
+
 def ColumnOrder():
     columnsOrder = []
     columnsOrder.append(input("Indique o numero da coluna Latidute: "))
@@ -23,6 +24,7 @@ def ColumnOrder():
     
     return columnsOrder
 
+
 # method to insert a header in a file
 # this method requires the csv name with the extension on it
 def InsertNewHeader(fileName):
@@ -31,6 +33,7 @@ def InsertNewHeader(fileName):
         file.seek(0, 0) 
         file.write(input("Indique o nome das colunas com \";\" a separa-los: ") + "\n")
         file.write(readcontent)
+
 
 # method to determine if there is a header, in case there ain´t a header, goes to InsertNewHeader
 # this method requires the csv name with the extension on it
@@ -55,7 +58,7 @@ def NewColumn(df, fileName):
     newColumns = newColumns.split()
     print(newColumns)
     df[[newColumns[0], newColumns[1]]] = df[columnToSplit].str.split(expand=True)
-    df.to_csv(fileName + 'Cleaned.csv')
+    df.to_csv(fileName + 'Cleaned.csv', ';', index=False)
    
 # method to detect if string has extensio, if not gives it
 def CSVextension(csvFile):
@@ -69,11 +72,17 @@ def CSVextension(csvFile):
 
     return csvFile
 
+
+# method to clean empty spaces, generates a new csv file
+# this method requires the csv name with and witout the extension on it
+# return the dataframe updated, in case of needing it to later use
 def LineAnaliser(file, fileName):
     df = pd.read_csv(file, delimiter=';')
-    
-    print(df["Longitude"])
+    print(df)
 
+    df.dropna(inplace = True)
+    df.to_csv(fileName + 'Cleaned.csv', ';', index=False)
+    return df
 
 # method to read file
 def OpenCSVfile():
@@ -88,6 +97,8 @@ def OpenCSVfile():
     df = pd.read_csv(file, delimiter=';')
     print(df)
 
+    df = LineAnaliser(file, csvFile)
+
     
     # if(df["Longitude"] == ''):
     #     print("vazia")
@@ -98,6 +109,7 @@ def OpenCSVfile():
 
 
     # print(columnOrderNames)
+
     # NewColumn(df, csvFile)
     # print(df)
     
