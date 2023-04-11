@@ -35,8 +35,8 @@ def HasHeader(fileName):
     headerOnOff = input()
     
     if headerOnOff == 's':
-        print(pd.read_csv(fileName, delimiter=';'))
-        headerLine = input("Em que linha esta o cabeçalho: ")
+        # print(pd.read_csv(fileName, delimiter=';'))
+        headerLine = 1
     else:
         InsertNewHeader(fileName)
         headerLine = 0
@@ -75,10 +75,10 @@ def CSVextension(csvFile):
 # return the dataframe updated, in case of needing it to later use
 def LineAnaliser(file, df):
     # df = pd.read_csv(file, delimiter=';')
-    print(df)
+    # print(df)
 
     df.dropna(inplace = True)
-    print(df)
+    # print(df)
     # df.to_csv(fileName + 'Cleaned.csv', ';', index=False)
     return df
 
@@ -102,13 +102,15 @@ def OpenCSVfile():
     print(columnOrderNames)
 
 
-    df = NewColumn(df, csvFile)
+    # df = NewColumn(df, csvFile)
 
     df.to_csv(csvFile + 'Cleaned.csv', ';', index=False)
-    
 
-def Main():
+
+def clean():
     os.system('cls')
     OpenCSVfile()
+if __name__ == "__main__":
+    clean()
 
-Main()
+
