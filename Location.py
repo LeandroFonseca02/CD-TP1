@@ -7,7 +7,7 @@ class Location:
         self.longitude = longitude
         self.latitude = latitude
         self.altitude = altitude
-        self.datetime = datetime.strptime(date + ' ' + time, '%d/%m/%Y %H:%M:%S')
+        self.datetime = datetime.strptime(date + ' ' + time[0:8], '%d/%m/%Y %H:%M:%S')
         self.date = self.datetime.date()
         self.time = self.datetime.time()
 
