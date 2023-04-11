@@ -4,8 +4,6 @@ import math
 import csv
 import os
 
-cleanFileName = " "
-
 class Location:
     def __init__(self, latitude, longitude, altitude, date, hour):
         self.longitude = longitude
@@ -59,23 +57,23 @@ def NewColumn(df, fileName):
     newColumns = input("Quais os nomes das novas colunas: ")
     newColumns = newColumns.split()
     print(newColumns)
+
     df[[newColumns[0], newColumns[1]]] = df[columnToSplit].str.split(expand=True)
-    df.to_csv(fileName + 'Cleaned.csv', ';', index=False)
+
+    return df
+    # df.to_csv(fileName + 'Cleaned.csv', ';', index=False)
+
    
 # method to detect if string has extensio, if not gives it
 def CSVextension(csvFile):
     split_tup = os.path.splitext(csvFile)
 
     if split_tup[1] == '':
-        cleanFileName = csvFile + "Cleaned.csv"
-        print(cleanFileName)
         csvFile += '.csv'
 
     elif split_tup[1] != '.csv':
         csvFile = csvFile[:len(csvFile) -4]
-        cleanFileName = csvFile + "Cleaned.csv"
         csvFile += '.csv'
-        print(cleanFileName)
         
     return csvFile
 
@@ -83,43 +81,38 @@ def CSVextension(csvFile):
 # method to clean empty spaces, generates a new csv file
 # this method requires the csv name with and witout the extension on it
 # return the dataframe updated, in case of needing it to later use
-def LineAnaliser(file, fileName):
-    df = pd.read_csv(file, delimiter=';')
+def LineAnaliser(file, df):
+    # df = pd.read_csv(file, delimiter=';')
     print(df)
 
     df.dropna(inplace = True)
-    df.to_csv(fileName + 'Cleaned.csv', ';', index=False)
+    print(df)
+    # df.to_csv(fileName + 'Cleaned.csv', ';', index=False)
     return df
 
 # method to read file
 def OpenCSVfile():
     csvFile = input("Introduzir nome do CSV: ")
     file = CSVextension(csvFile)
-    
-    print(cleanFileName)
-    # headerLine = HasHeader(file)
-    # print("Cabeçalho na linha " + str(headerLine))
-    
-    # LineAnaliser(file, csvFile)
-
-    # df = pd.read_csv(file, delimiter=';')
-    # print(df)
-
-    # df = LineAnaliser(file, csvFile)
-
-    
-    # if(df["Longitude"] == ''):
-    #     print("vazia")
-    # print(df["Longitude"])
-
-    # columnOrderNames = ColumnOrder()
-    # print(columnOrderNames)
 
 
-    # print(columnOrderNames)
+    headerLine = HasHeader(file)
+    print("Cabeçalho na linha " + str(headerLine))
 
-    # NewColumn(df, csvFile)
-    # print(df)
+
+    df = pd.read_csv(file, delimiter=';')
+   
+
+    df = LineAnaliser(file, df)
+
+
+    columnOrderNames = ColumnOrder()
+    print(columnOrderNames)
+
+
+    df = NewColumn(df, csvFile)
+
+    df.to_csv(csvFile + 'Cleaned.csv', ';', index=False)
     
 
 def Main():
