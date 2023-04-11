@@ -3,10 +3,10 @@ import math
 
 
 class Location:
-    def __init__(self, latitude, longitude, altitude, date, time):
+    def __init__(self, latitude, longitude, date, time):
         self.longitude = float(longitude)
         self.latitude = float(latitude)
-        self.altitude = float(altitude)
+        # self.altitude = float(altitude)
         self.datetime = datetime.strptime(date + ' ' + time[0:8], '%Y-%m-%d %H:%M:%S')
         self.date = self.datetime.date()
         self.time = self.datetime.time()
