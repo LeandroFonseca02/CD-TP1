@@ -52,7 +52,7 @@ def OpcaoMenu():
 
         match option:
             case 0:
-                exit
+                exit()
             case 1:
                 print(df)
                 print("Cabeçalho na linha " + str(headerLine))
@@ -71,10 +71,16 @@ def OpcaoMenu():
                         print("{:.2f}m entre ponto ".format(dist) + "{:d}".format(i) + " e ponto {:d}".format(i + 1))
 
             case 4:
-                print(df)
+                for i, location in enumerate(locations):
+                    if i < len(locations) - 1:
+                        ms = location.calculate_velocity_ms(location, locations[i + 1])
+                        kmh = location.calculate_velocity_kmh(location, locations[i + 1])
+                        print("{:.2f}m/s ".format(ms) + "ou {:.2f}km/h entre ponto ".format(kmh) + "{:d}".format(i) + " e ponto {:d}".format(i + 1))
 
             case 5:
-                print(df)
+                print("Distância total percorrida: {:.2f} kilómetros".format(Location.total_distance_km(locations)) + " ou {:.2f} metros".format(Location.total_distance_meters(locations)))
+                print("Tempo total gasto: " + str(Location.total_time(locations)))
+
 
         input("Press to Continue... ")
 
