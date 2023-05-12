@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import datetime, timedelta
 import math
 
 
@@ -42,3 +42,28 @@ class Location:
     @staticmethod
     def delta_time_sec(location_start, location_end):
         return (location_end.datetime - location_start.datetime).total_seconds()
+
+    # Calcula a diferença de tempo entre dois pontos
+    @staticmethod
+    def delta_time(location_start, location_end):
+        return location_end.datetime - location_start.datetime
+
+    # Calcula distância total em kilómetros
+    @staticmethod
+    def total_distance_km(locations):
+        distance = 0
+        for i, location in enumerate(locations):
+            if i < len(locations)-1:
+                distance += Location.calculate_distance(location, locations[i+1])
+
+        return distance
+
+    # Calcula o tempo total gasto
+    @staticmethod
+    def total_time(locations):
+        time = timedelta(seconds=0)
+        for i, location in enumerate(locations):
+            if i < len(locations) - 1:
+                time += timedelta(seconds=Location.delta_time_sec(location, locations[i + 1]))
+
+        return time
