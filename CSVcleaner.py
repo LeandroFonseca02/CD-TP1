@@ -4,9 +4,6 @@ import math
 import csv
 import os
 
-cleanFileName = " "
-
-
 def ColumnOrder():
     columnsOrder = []
     columnsOrder.append(input("Indique o numero da coluna Latidute: "))
