@@ -27,8 +27,8 @@ def teste():
     #
     # print(locations.__len__())
 
-    # for i in range(len(locations) - 1):
-    #     print(Location.calculate_distance_meters(locations[i], locations[i + 1]), Location.delta_time_sec(locations[i], locations[i + 1]))
+    for i in range(len(locations) - 1):
+        print(Location.calculate_distance_meters(locations[i], locations[i + 1]), Location.delta_time_sec(locations[i], locations[i + 1]))
 
 
 if __name__ == "__main__":
