@@ -28,6 +28,10 @@ class Location:
         distance = exp2 * radius_earth
         return distance
 
+    @staticmethod
+    def calculate_distance_meters(location, location2):
+        return Location.calculate_distance(location, location2)*1000
+
     # Calcula a velocidade entre dois pontos em metros por segundo
     @staticmethod
     def calculate_velocity_ms(distance, delta_time):
@@ -35,8 +39,8 @@ class Location:
 
     # Calcula a velocidade entre dois pontos em kilómetros por hora
     @staticmethod
-    def calculate_velocity_kmh(distance, delta_time):
-        return distance / (abs(delta_time / 3600))
+    def calculate_velocity_kmh(location, location2):
+        return Location.calculate_distance(location, location2) / (abs(Location.delta_time_sec(location, location2)/3600))
 
     # Calcula a diferença de tempo entre dois pontos em segundos
     @staticmethod
@@ -61,9 +65,4 @@ class Location:
     # Calcula o tempo total gasto
     @staticmethod
     def total_time(locations):
-        time = timedelta(seconds=0)
-        for i, location in enumerate(locations):
-            if i < len(locations) - 1:
-                time += timedelta(seconds=Location.delta_time_sec(location, locations[i + 1]))
-
-        return time
+        return timedelta(seconds=Location.delta_time_sec(locations[0], locations[len(locations)-1]))
