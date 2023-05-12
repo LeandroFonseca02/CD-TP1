@@ -4,6 +4,8 @@ import math
 import csv
 import os
 
+from pathlib import Path
+
 def ColumnOrder():
     columnsOrder = []
     columnsOrder.append(input("Indique o numero da coluna Latidute: "))
@@ -75,7 +77,7 @@ def LineAnaliser(file, df):
     # print(df)
 
     df.dropna(inplace = True)
-    # print(df)
+    print("Linhas incorretas, apagadas.")
     # df.to_csv(fileName + 'Cleaned.csv', ';', index=False)
     return df
 
@@ -83,7 +85,7 @@ def LineAnaliser(file, df):
 def OpenCSVfile():
     csvFile = input("Introduzir nome do CSV: ")
     file = CSVextension(csvFile)
-
+    print()
 
     headerLine = HasHeader(file)
     print("Cabeçalho na linha " + str(headerLine))
