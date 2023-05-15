@@ -1,10 +1,10 @@
 import pandas as pd
 import datetime
+from Location import Location
+import numpy as np
 import math
 import csv
 import os
-
-from pathlib import Path
 
 def ColumnOrder():
     columnsOrder = []
@@ -85,7 +85,6 @@ def LineAnaliser(file, df):
 def OpenCSVfile():
     csvFile = input("Introduzir nome do CSV: ")
     file = CSVextension(csvFile)
-    print()
 
     headerLine = HasHeader(file)
     print("Cabeçalho na linha " + str(headerLine))
@@ -102,8 +101,43 @@ def OpenCSVfile():
 
 
     # df = NewColumn(df, csvFile)
+    # df.to_csv(csvFile + 'Cleaned.csv', ';', index=False)
 
-    df.to_csv(csvFile + 'Cleaned.csv', ';', index=False)
+    locations = []
+    velocities = []
+    loc1Indx = []
+    loc2Indx = []
+
+    with open(file, newline='') as csvFile:
+        csvreader = csv.reader(csvFile, delimiter=';')
+        for i, row in enumerate(csvreader):
+            if i >= headerLine:
+                a = Location(row[int(columnOrderNames[0]) - 1], row[int(columnOrderNames[1]) - 1],
+                            row[int(columnOrderNames[2]) - 1], row[int(columnOrderNames[3]) - 1])
+                locations.append(a)
+
+
+    for i, location in enumerate(locations):
+        if i < len(locations) - 2:
+            velocities.append(location.calculate_velocity_ms(location, locations[i + 1]))
+            loc1Indx.append(i)
+            loc2Indx.append(i+1)
+
+    velocityData = {'velocity': velocities, 'loc1Indx': loc1Indx, 'loc2Indx': loc2Indx}
+    velocityDF = pd.DataFrame(data=velocityData)
+        
+    veloThirdQrt = velocityDF.quantile(q=0.75, axis=0)
+    veloThirdQrt["velocity"]
+    
+
+
+
+    # npArray =  np.array(velocities)
+    # veloThirdQrt = np.quantile(npArray,[0.75])
+
+
+
+    
 
 
 def clean():
