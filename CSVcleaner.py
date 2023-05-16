@@ -56,15 +56,20 @@ def NewColumn(df, fileName):
 
    
 # method to detect if string has extensio, if not gives it
-def CSVextension(csvFile):
+def CSVextension(csvFile, putExt):
     split_tup = os.path.splitext(csvFile)
 
-    if split_tup[1] == '':
-        csvFile += '.csv'
+    if putExt == 0:
+        if split_tup[1] == '':
+            csvFile += '.csv'
 
-    elif split_tup[1] != '.csv':
-        csvFile = csvFile[:len(csvFile) -4]
-        csvFile += '.csv'
+        elif split_tup[1] != '.csv':
+            csvFile = csvFile[:len(csvFile) -4]
+            csvFile += '.csv'
+    else:
+        if split_tup[1] != '':
+            csvFile = csvFile[:len(csvFile) -4]
+            csvFile += ''
         
     return csvFile
 
@@ -81,10 +86,48 @@ def LineAnaliser(file, df):
     # df.to_csv(fileName + 'Cleaned.csv', ';', index=False)
     return df
 
+def VerifyOutliers(file, headerLine, columnOrderNames, df):
+    locations = []
+    velocities = []
+    loc1Indx = []
+    loc2Indx = []
+
+    with open(file, newline='') as csvFile:
+        csvreader = csv.reader(csvFile, delimiter=';')
+        for i, row in enumerate(csvreader):
+            if i >= headerLine:
+                a = Location(row[int(columnOrderNames[0]) - 1], row[int(columnOrderNames[1]) - 1],
+                    row[int(columnOrderNames[2]) - 1], row[int(columnOrderNames[3]) - 1])
+                locations.append(a)
+
+
+    for i, location in enumerate(locations):
+        if i < len(locations) - 2:
+            velocities.append(location.calculate_velocity_ms(location, locations[i + 1]))
+            loc1Indx.append(i)
+            loc2Indx.append(i+1)
+
+    velocityData = {'velocity': velocities, 'loc1Indx': loc1Indx, 'loc2Indx': loc2Indx}
+    velocityDF = pd.DataFrame(data=velocityData)
+        
+    veloThirdQrt = velocityDF.quantile(q=0.75, axis=0)
+    veloThirdQrt["velocity"]
+
+
+    for i, velocity in enumerate(velocityDF["velocity"]):
+        if i < len(velocityDF) - 1:
+            if velocity > veloThirdQrt["velocity"]:
+                # print(Location.calculate_velocity_ms(locations[i], locations[i+1]))
+                df["Latitude"].values[i] = (locations[i-1].latitude + locations[i + 1].latitude)/2
+                df["Longitude"].values[i] = (locations[i-1].longitude + locations[i + 1].longitude)/2
+
+    return df
+
+
 # method to read file
 def OpenCSVfile():
     csvFile = input("Introduzir nome do CSV: ")
-    file = CSVextension(csvFile)
+    file = CSVextension(csvFile, 0)
 
     headerLine = HasHeader(file)
     print("Cabeçalho na linha " + str(headerLine))
@@ -103,41 +146,12 @@ def OpenCSVfile():
     # df = NewColumn(df, csvFile)
     # df.to_csv(csvFile + 'Cleaned.csv', ';', index=False)
 
-    locations = []
-    velocities = []
-    loc1Indx = []
-    loc2Indx = []
-
-    with open(file, newline='') as csvFile:
-        csvreader = csv.reader(csvFile, delimiter=';')
-        for i, row in enumerate(csvreader):
-            if i >= headerLine:
-                a = Location(row[int(columnOrderNames[0]) - 1], row[int(columnOrderNames[1]) - 1],
-                            row[int(columnOrderNames[2]) - 1], row[int(columnOrderNames[3]) - 1])
-                locations.append(a)
-
-
-    for i, location in enumerate(locations):
-        if i < len(locations) - 2:
-            velocities.append(location.calculate_velocity_ms(location, locations[i + 1]))
-            loc1Indx.append(i)
-            loc2Indx.append(i+1)
-
-    velocityData = {'velocity': velocities, 'loc1Indx': loc1Indx, 'loc2Indx': loc2Indx}
-    velocityDF = pd.DataFrame(data=velocityData)
-        
-    veloThirdQrt = velocityDF.quantile(q=0.75, axis=0)
-    veloThirdQrt["velocity"]
     
+    df = VerifyOutliers(file, headerLine, columnOrderNames, df)
 
+    csvFile = CSVextension(csvFile, 1)
+    df.to_csv(csvFile + 'Cleaned.csv', ';', index=False)
 
-
-    # npArray =  np.array(velocities)
-    # veloThirdQrt = np.quantile(npArray,[0.75])
-
-
-
-    
 
 
 def clean():

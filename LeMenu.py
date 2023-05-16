@@ -18,7 +18,7 @@ def Menu():
 
 def IndicarFicheiro():
     csvFile = input("Introduzir nome do CSV: ")
-    file = CSVextension(csvFile)
+    file = CSVextension(csvFile,0)
 
     print("\n\n")
 
