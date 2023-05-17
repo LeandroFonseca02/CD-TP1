@@ -80,3 +80,14 @@ class Location:
     @staticmethod
     def total_time(locations):
         return timedelta(seconds=Location.delta_time_sec(locations[0], locations[len(locations)-1]))
+
+    @staticmethod
+    def transportation(velocidade):
+        if 0 <= velocidade <= 20:
+            return "Velocidade baixa"
+        elif 21 <= velocidade <= 40:
+            return "Velocidade moderada"
+        elif 41 <= velocidade <= 800:
+            return "Velocidade alta"
+        else:
+            return "Opção inválida"
