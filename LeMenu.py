@@ -75,7 +75,7 @@ def OpcaoMenu():
                     if i < len(locations) - 1:
                         ms = location.calculate_velocity_ms(location, locations[i + 1])
                         kmh = location.calculate_velocity_kmh(location, locations[i + 1])
-                        print("{:.2f}m/s ".format(ms) + "ou {:.2f}km/h entre ponto ".format(kmh) + "{:d}".format(i) + " e ponto {:d}".format(i + 1))
+                        print("{:.2f}m/s ".format(ms) + "ou {:.2f}km/h entre ponto ".format(kmh) + "{:d}".format(i) + " e ponto {:d}".format(i + 1) + ", meio de transporte: {:s}".format(Location.transportation(ms)))
 
             case 5:
                 print("Distância total percorrida: {:.2f} kilómetros".format(Location.total_distance_km(locations)) + " ou {:.2f} metros".format(Location.total_distance_meters(locations)))
