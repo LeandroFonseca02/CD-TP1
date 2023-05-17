@@ -1,3 +1,4 @@
+import time
 import pandas as pd
 import datetime
 from Location import Location
@@ -117,9 +118,16 @@ def VerifyOutliers(file, headerLine, columnOrderNames, df):
     for i, velocity in enumerate(velocityDF["velocity"]):
         if i < len(velocityDF) - 1:
             if velocity > veloThirdQrt["velocity"]:
-                # print(Location.calculate_velocity_ms(locations[i], locations[i+1]))
+                
+                h=(locations[i-1].time.hour + locations[i+1].time.hour)/2
+                m=(locations[i-1].time.minute + locations[i+1].time.minute)/2
+                s=(locations[i-1].time.second + locations[i+1].time.second)/2
+                ms=(locations[i-1].time.microsecond + locations[i+1].time.microsecond)/2
+                avg_time = ('%02i:%02i:%02i.%02i' % (h, m, s, ms))[:-4]
+                
                 df["Latitude"].values[i] = (locations[i-1].latitude + locations[i + 1].latitude)/2
                 df["Longitude"].values[i] = (locations[i-1].longitude + locations[i + 1].longitude)/2
+                df["Time"].values[i] = avg_time
 
     return df
 
