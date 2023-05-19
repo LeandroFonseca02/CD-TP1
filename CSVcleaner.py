@@ -35,16 +35,15 @@ def HasHeader(fileName):
     headerOnOff = input()
     
     if headerOnOff == 's':
-        # print(pd.read_csv(fileName, delimiter=';'))
         headerLine = 1
     else:
         InsertNewHeader(fileName)
-        headerLine = 0
+        headerLine = 1
 
     return headerLine
 
 # method to split column write it into a new file
-def NewColumn(df, fileName):
+def NewColumn(df):
     columnToSplit = input("Que coluna quer dividir: ")
     newColumns = input("Quais os nomes das novas colunas: ")
     newColumns = newColumns.split()
@@ -53,7 +52,6 @@ def NewColumn(df, fileName):
     df[[newColumns[0], newColumns[1]]] = df[columnToSplit].str.split(expand=True)
 
     return df
-    # df.to_csv(fileName + 'Cleaned.csv', ';', index=False)
 
    
 # method to detect if string has extensio, if not gives it
@@ -78,13 +76,10 @@ def CSVextension(csvFile, putExt):
 # method to clean empty spaces, generates a new csv file
 # this method requires the csv name with and witout the extension on it
 # return the dataframe updated, in case of needing it to later use
-def LineAnaliser(file, df):
-    # df = pd.read_csv(file, delimiter=';')
-    # print(df)
-
+def LineAnaliser(df):
     df.dropna(inplace = True)
     print("Linhas incorretas, apagadas.")
-    # df.to_csv(fileName + 'Cleaned.csv', ';', index=False)
+    
     return df
 
 def VerifyOutliers(file, headerLine, columnOrderNames, df):
@@ -140,20 +135,12 @@ def OpenCSVfile():
     headerLine = HasHeader(file)
     print("Cabeçalho na linha " + str(headerLine))
 
-
     df = pd.read_csv(file, delimiter=';')
    
-
-    df = LineAnaliser(file, df)
-
+    df = LineAnaliser(df)
 
     columnOrderNames = ColumnOrder()
     print(columnOrderNames)
-
-
-    # df = NewColumn(df, csvFile)
-    # df.to_csv(csvFile + 'Cleaned.csv', ';', index=False)
-
     
     df = VerifyOutliers(file, headerLine, columnOrderNames, df)
 
@@ -165,6 +152,7 @@ def OpenCSVfile():
 def clean():
     os.system('cls')
     OpenCSVfile()
+    
 if __name__ == "__main__":
     clean()
 
