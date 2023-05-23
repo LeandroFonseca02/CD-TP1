@@ -83,11 +83,17 @@ class Location:
 
     @staticmethod
     def transportation(velocidade):
-        if 0 <= velocidade <= 20:
-            return "Velocidade baixa"
-        elif 21 <= velocidade <= 40:
-            return "Velocidade moderada"
-        elif 41 <= velocidade <= 800:
-            return "Velocidade alta"
+        if 0.0 == velocidade:
+            return "Parado"
+        elif 0.0 < velocidade <= 2.0:
+            return "Andar"
+        elif 2.0 < velocidade <= 13.0:
+            return "Bicicleta"
+        elif 13.0 < velocidade <= 70.0:
+            return "Carro"
+        elif 70.0 < velocidade <= 800.0:
+            return "Avião"
+        elif 800.0 < velocidade:
+            return "Velocidade inválida"
         else:
-            return "Opção inválida"
+            return "Velocidade inválida"
