@@ -114,11 +114,11 @@ def VerifyOutliers(file, headerLine, columnOrderNames, df):
         if i < len(velocityDF) - 1:
             if velocity > veloThirdQrt["velocity"]:
                 
-                h=(locations[i-1].time.hour + locations[i+1].time.hour)/2
-                m=(locations[i-1].time.minute + locations[i+1].time.minute)/2
-                s=(locations[i-1].time.second + locations[i+1].time.second)/2
-                ms=(locations[i-1].time.microsecond + locations[i+1].time.microsecond)/2
-                avg_time = ('%02i:%02i:%02i.%02i' % (h, m, s, ms))[:-4]
+                h=int((locations[i-1].time.hour + locations[i+1].time.hour)/2)
+                m=int((locations[i-1].time.minute + locations[i+1].time.minute)/2)
+                s=int((locations[i-1].time.second + locations[i+1].time.second)/2)
+                ms=int((locations[i-1].time.microsecond + locations[i+1].time.microsecond)/2)
+                avg_time = (f'{h:02}:{m:02}:{s:02}.{ms:02}')
                 
                 df["Latitude"].values[i] = (locations[i-1].latitude + locations[i + 1].latitude)/2
                 df["Longitude"].values[i] = (locations[i-1].longitude + locations[i + 1].longitude)/2
